@@ -30,12 +30,15 @@ get("/payment/new") do
 end
 
 get("/payment/results") do
+  #@apr = params.fetch("users_apr").to_f
+  #@apr = params.fetch("users_apr").to_f.round(4)
   @apr = params.fetch("users_apr").to_f
+  @apr_rounded = @apr.round(4)
   @years = params.fetch("users_years").to_f
   @principal = params.fetch("users_principal").to_f
-  rate = @apr / 12
+  rate = ((@apr_rounded / 100) / 12)
   total_num_payments = 12 * @years
-  @result = @principal * ((rate * (1+rate) ** total_num_payments) / (((1+rate) ** total_num_payments) - 1))
+  @result = (@principal * ((rate * (1+rate) ** total_num_payments) / (((1+rate) ** total_num_payments) - 1))).round(2)
   erb(:payment_results)
 end
 
