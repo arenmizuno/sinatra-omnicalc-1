@@ -2,8 +2,55 @@ require "sinatra"
 require "sinatra/reloader"
 
 get("/") do
-  "
-  <h1>Welcome to your Sinatra App!</h1>
-  <p>Define some routes in app.rb</p>
-  "
+  erb(:howdy)
+end
+
+get("/square/new") do
+  erb(:new_square_calc)
+end
+
+get("/square/results") do
+  @num = params.fetch("users_number").to_f
+  @result = @num ** 2
+  erb(:square_results)
+end
+
+get("/square_root/new") do
+  erb(:new_square_root_calc)
+end
+
+get("/square_root/results") do
+  @num = params.fetch("users_number").to_f
+  @result = @num ** 0.5
+  erb(:square_root_results)
+end
+
+get("/payment/new") do
+  erb(:new_payment_calc)
+end
+
+get("/payment/results") do
+  @apr = params.fetch("users_apr").to_f
+  @years = params.fetch("users_years").to_f
+  @principal = params.fetch("users_principal").to_f
+  rate = @apr / 12
+  total_num_payments = 12 * @years
+  @result = @principal * ((rate * (1+rate) ** total_num_payments) / (((1+rate) ** total_num_payments) - 1))
+  erb(:payment_results)
+end
+
+get("/random/new") do
+  erb(:new_random_calc)
+end
+
+get("/random/results") do
+  @min = params.fetch("users_minimum").to_f
+  @max = params.fetch("users_maximum").to_f
+  if @max > @min
+    @result = rand(@min..@max) 
+  else
+    @result = nil 
+  end
+
+  erb(:random_results)
 end
